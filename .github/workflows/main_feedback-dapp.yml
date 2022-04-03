@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'feedback-dapp'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_379E35E51C68425ABFAD546E887E99FE }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_59C80CA9D3234EA59B22F39E1EAEA251 }}
