@@ -5,6 +5,8 @@ from transformers import BertTokenizer
 from transformers import BertModel
 
 tokenizer = BertTokenizer.from_pretrained('bert-base-cased')  # Get pretrained tokenizer 
+model_url = "https://onedrive.live.com/download?cid=69AF5BB78B46201D&resid=69AF5BB78B46201D%2110951&authkey=AJJkPQlv2Y4_esc"
+
 
 class BertClassifier(nn.Module):
 
@@ -57,10 +59,20 @@ class Configuration():  # General configuration class
 conf = Configuration()
 
 
-model = BertClassifier().to(conf.device)
+def load_statedict_from_online():
+    torchhome = torch.hub._get_torch_home()
+    ckpthome = os.path.join(torchhome, "models")
+    os.makedirs(ckpthome, exist_ok=True)
+    filepath = os.path.join(ckpthome, "rating.ckpt-3")
+    #if os.path.exists(filepath):
+    torch.hub.download_url_to_file(model_url, filepath, hash_prefix=None, progress=True)
+    model = torch.load(filepath)
+    return model
 
 
-model = load_model(model, 'models/rating.ckpt-3')  # Load model
+#model = BertClassifier().to(conf.device)
+#model = load_model(model, 'models/rating.ckpt-3')  # Load model
+model = load_statedict_from_online()
 
 def get_rating(feedback, verbose=False):
     model.eval()
