@@ -8,7 +8,6 @@ import os
 
 tokenizer = BertTokenizer.from_pretrained('bert-base-cased')  # Get pretrained tokenizer 
 labels = {'valid':0, 'unrelated':1, 'abusive':2}  # Set labels dict
-model_url = "https://onedrive.live.com/download?cid=69AF5BB78B46201D&resid=69AF5BB78B46201D%2110950&authkey=ABvPdCT8skZAB5Y"
 
 class BertClassifier(nn.Module):
 
@@ -58,23 +57,9 @@ def load_model(model, path):
     model_stats = torch.load(path, map_location=torch.device(conf.device))
     model.load_state_dict(model_stats['net_param'])
     return model 
-    
-    
-    
-def load_statedict_from_online():
-    torchhome = torch.hub._get_torch_home()
-    ckpthome = os.path.join(torchhome, "models")
-    os.makedirs(ckpthome, exist_ok=True)
-    filepath = os.path.join(ckpthome, "classification.ckpt-3")
-    #if os.path.exists(filepath):
-    torch.hub.download_url_to_file(model_url, filepath, hash_prefix=None, progress=True)
-    model = torch.load(filepath)
-    return model
-
   
-#model = BertClassifier().to(conf.device)     
-#model = load_model(model, 'models/classification.ckpt-3')  # Load model
-model = load_statedict_from_online()
+model = BertClassifier().to(conf.device)     
+model = load_model(model, 'models/classification.ckpt-3')  # Load model
 inv_labels = ['valid', 'unrelated', 'abusive']
 
 
